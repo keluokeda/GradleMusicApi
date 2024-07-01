@@ -1,0 +1,46 @@
+package com.ke.gradlemusicapi.entity.response
+
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
+data class Playlist(
+	val id: Long,
+	/**
+     * 创建者
+     */
+    val creator: User,
+	/**
+     * 封面图片地址
+     */
+    val coverImgUrl: String,
+	/**
+     * 名字
+     */
+    val name: String,
+	/**
+     * 标签
+     */
+    val tags: List<String>,
+	/**
+     * 描述
+     */
+    val description: String?,
+	/**
+     * 歌曲数量
+     */
+    val trackCount: Long,
+	/**
+     * 总播放次数
+     */
+    val playCount: Long,
+
+	/**
+     * 订阅用户列表
+     */
+    val subscribers: List<User> = emptyList(),
+
+	/**
+     * 更新时间
+     */
+    val updateTime: Long
+)
