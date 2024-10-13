@@ -93,9 +93,7 @@ class PlaylistController(
 				songs.await(),
 				dynamic.await(),
 				canBook = playlist.creator.userId.toString() != userId
-			).also {
-				playlistService.savePlaylistDetail(it, userId.toLong())
-			}
+			)
 		)
 
 	}
