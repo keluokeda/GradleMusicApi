@@ -1,15 +1,14 @@
 package com.ke.gradlemusicapi.entity.response
 
-import com.ke.gradlemusicapi.entity.document.Artist
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class AlbumResponse(
     val songs: List<Song>,
     val album: AlbumData
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class AlbumData(
     val name: String,
     val description: String?,
@@ -21,7 +20,7 @@ data class AlbumData(
     val company: String
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class NewAlbumListResponse(
     val albums: List<AlbumData> = emptyList()
 )

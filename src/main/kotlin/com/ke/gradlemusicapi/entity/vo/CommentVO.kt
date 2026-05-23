@@ -1,7 +1,6 @@
 package com.ke.gradlemusicapi.entity.vo
 
 import com.ke.gradlemusicapi.entity.response.Comment
-import com.ke.gradlemusicapi.entity.response.IpLocation
 import com.ke.gradlemusicapi.entity.response.User
 
 data class CommentVO(

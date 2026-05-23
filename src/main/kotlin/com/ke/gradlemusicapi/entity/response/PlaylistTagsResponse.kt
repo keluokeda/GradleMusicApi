@@ -1,13 +1,13 @@
 package com.ke.gradlemusicapi.entity.response
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class PlaylistTagsResponse(
     val tags: List<PlaylistTag>
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class PlaylistTag(
     val name: String,
     val hot: Boolean,

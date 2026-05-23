@@ -1,6 +1,7 @@
 package com.ke.gradlemusicapi.entity.vo
 
-import com.ke.gradlemusicapi.entity.document.Artist
+import com.ke.gradlemusicapi.entity.response.Artist
+
 
 data class MvDetailVO(
 	val id: Long,

@@ -1,22 +1,21 @@
 package com.ke.gradlemusicapi.entity.response
 
-import com.ke.gradlemusicapi.entity.document.Artist
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class ArtistMvResponse(
     val mvs: List<ArtistMv>
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class ArtistMv(
 	val id: Long,
 	val name: String,
 	val status: Int,
 	val artist: Artist,
-	@Json(name = "imgurl16v9")
-    val image: String,
+	@SerialName("imgurl16v9")
+	val image: String,
 	val artistName: String,
 	val duration: Int,
 	val playCount: Int,

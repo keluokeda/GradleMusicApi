@@ -1,24 +1,20 @@
 package com.ke.gradlemusicapi.util
 
-import com.squareup.moshi.JsonClass
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapter
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import org.springframework.stereotype.Component
 import org.springframework.util.FileCopyUtils
 import org.springframework.util.ResourceUtils
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 
-@OptIn(ExperimentalStdlibApi::class)
 @Component
 class CityUtil {
 
+	private val json = Json { ignoreUnknownKeys = true }
+
 	private val cityList by lazy {
-		val jsonString = readJsFile()
-
-		val adapter = Moshi.Builder().build().adapter<List<JsonCity>>()
-
-		adapter.fromJson(jsonString)!!
+		json.decodeFromString<List<JsonCity>>(readJsFile())
 	}
 
 
@@ -51,7 +47,7 @@ class CityUtil {
  *     }
  *   },
  */
-@JsonClass(generateAdapter = true)
+@Serializable
 data class JsonCity(
 	val id: Int,
 	val name: String,

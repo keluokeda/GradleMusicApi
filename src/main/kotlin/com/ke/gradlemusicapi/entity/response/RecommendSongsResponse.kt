@@ -1,14 +1,14 @@
 package com.ke.gradlemusicapi.entity.response
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class RecommendSongsResponse(
     val code: Int,
     val data: RecommendSongsData?
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class RecommendSongsData(
     val dailySongs: List<Song>
 )

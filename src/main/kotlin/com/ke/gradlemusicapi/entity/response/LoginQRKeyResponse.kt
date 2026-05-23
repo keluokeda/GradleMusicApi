@@ -1,13 +1,13 @@
 package com.ke.gradlemusicapi.entity.response
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class LoginQRKeyResponse(
     val data: LoginQRKeyData? = null
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class LoginQRKeyData(
     val unikey: String? = null
 )

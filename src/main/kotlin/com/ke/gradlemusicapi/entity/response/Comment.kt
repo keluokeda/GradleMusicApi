@@ -1,14 +1,14 @@
 package com.ke.gradlemusicapi.entity.response
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class Comment(
 	val commentId: Long = 0,
 	val user: User,
 	val content: String?,
-	@Json(name = "timeStr")
+	@SerialName("timeStr")
 	val timeString: String = "",
 	val time: Long = 0,
 	val likedCount: Int = 0,
@@ -22,7 +22,7 @@ data class Comment(
 	val replyCount: Int = 0
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class IpLocation(
 	val location: String = ""
 )

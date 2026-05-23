@@ -1,9 +1,8 @@
 package com.ke.gradlemusicapi.entity.response
 
-import com.ke.gradlemusicapi.entity.document.Artist
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MvAllResponse(
     val data: List<Mv>,
     val hasMore: Boolean,
@@ -11,7 +10,7 @@ data class MvAllResponse(
 )
 
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class Mv(
     val id: Long,
     val cover: String,

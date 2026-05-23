@@ -1,8 +1,8 @@
 package com.ke.gradlemusicapi.entity.response
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class UserDetailResponse(
 	val level: Int,
 	val listenSongs: Int,
@@ -11,7 +11,7 @@ data class UserDetailResponse(
 	val createDays: Int
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class UserDetailProfile(
 	val avatarUrl: String,
 	val nickname: String,

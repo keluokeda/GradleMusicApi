@@ -1,13 +1,13 @@
 package com.ke.gradlemusicapi.entity.response
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MvUrlResponse(
 	val data: MvUrlData
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MvUrlData(
 	val url: String
 )

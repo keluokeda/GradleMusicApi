@@ -1,13 +1,13 @@
 package com.ke.gradlemusicapi.entity.response
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class LrcResponse(
     val lrc: Lrc
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class Lrc(
     val lyric: String
 )

@@ -1,9 +1,8 @@
 package com.ke.gradlemusicapi.entity.response
 
-import com.ke.gradlemusicapi.entity.document.Artist
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MvDetailResponse(
 	val data: MvDetailData
 )
@@ -54,7 +53,7 @@ data class MvDetailResponse(
  * 		"videoGroup": []
  * 	}
  */
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MvDetailData(
 	val id: Long,
 	val name: String,

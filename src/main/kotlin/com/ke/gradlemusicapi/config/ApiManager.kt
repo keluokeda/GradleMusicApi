@@ -1,17 +1,20 @@
 package com.ke.gradlemusicapi.config
 
 import com.ke.gradlemusicapi.api.HttpService
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 
 @Configuration
 class ApiManager {
 
+	private val json = Json { ignoreUnknownKeys = true }
 
 	private fun okhttpClient(): OkHttpClient {
 
@@ -46,7 +49,7 @@ class ApiManager {
 			.baseUrl(
 				"http://localhost:3000"
 			)
-			.addConverterFactory(MoshiConverterFactory.create())
+			.addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
 			.client(okhttpClient())
 			.build()
 			.create(HttpService::class.java)

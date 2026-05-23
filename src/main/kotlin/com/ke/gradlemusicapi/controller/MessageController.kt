@@ -5,12 +5,11 @@ import com.ke.gradlemusicapi.cookie
 import com.ke.gradlemusicapi.entity.response.PrivateMessage
 import com.ke.gradlemusicapi.entity.vo.BaseVO
 import com.ke.gradlemusicapi.entity.vo.PrivateMessageVO
-import com.squareup.moshi.JsonClass
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapter
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -56,15 +55,17 @@ class MessageController(private val httpService: HttpService) {
 }
 
 
-@OptIn(ExperimentalStdlibApi::class)
-private val adapter = Moshi.Builder().build().adapter<LastMessage>()
+private val messageJson = Json { ignoreUnknownKeys = true }
 
 private fun PrivateMessage.content(): String {
-	val lastMessage = adapter.fromJson(lastMessage) ?: return ""
-	return lastMessage.msg
+	return try {
+		messageJson.decodeFromString<LastMessage>(lastMessage).msg
+	} catch (_: Exception) {
+		""
+	}
 }
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class LastMessage(
 	val msg: String
 )

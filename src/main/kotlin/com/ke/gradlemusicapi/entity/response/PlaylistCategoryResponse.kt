@@ -1,14 +1,14 @@
 package com.ke.gradlemusicapi.entity.response
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class PlaylistCategoryResponse(
     val all: PlaylistCategory,
     val sub: List<PlaylistCategory>
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class PlaylistCategory(
     val name: String,
     val hot: Boolean

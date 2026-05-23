@@ -1,15 +1,15 @@
 package com.ke.gradlemusicapi.entity.response
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class ArtistDescResponse(
     val briefDesc: String,
     val introduction: List<ArtistIntroduce>,
     val code: Int
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class ArtistIntroduce(
     val ti: String,
     val txt: String

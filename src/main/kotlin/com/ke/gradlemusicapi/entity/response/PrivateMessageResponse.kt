@@ -1,26 +1,26 @@
 package com.ke.gradlemusicapi.entity.response
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class PrivateMessageResponse(
-	@Json(name = "msgs")
-    val list: List<PrivateMessage>,
+	@SerialName("msgs")
+	val list: List<PrivateMessage>,
 	val more: Boolean,
 	val code: Int,
-	@Json(name = "newMsgCount")
-    val newCount: Int
+	@SerialName("newMsgCount")
+	val newCount: Int
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class PrivateMessage(
-	@Json(name = "lastMsg")
-    val lastMessage: String,
-	@Json(name = "lastMsgTime")
-    val time: Long,
+	@SerialName("lastMsg")
+	val lastMessage: String,
+	@SerialName("lastMsgTime")
+	val time: Long,
 	val fromUser: User,
 	val toUser: User,
-	@Json(name = "lastMsgId")
-    val id: Long? = 0
+	@SerialName("lastMsgId")
+	val id: Long? = 0
 )
