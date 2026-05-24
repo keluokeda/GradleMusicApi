@@ -74,14 +74,8 @@ class LoginController(
 	@GetMapping("/login/status")
 	suspend fun loginStatus(
 		authentication: Authentication,
-		request: ServerHttpRequest
 	): BaseVO<Long> {
-//		val cookie = authentication.cookie
-//		val realIp = request.ipAddress
-//		val result = jsManager.beforeRequest("login/status", mapOf("cookie" to cookie, "realIP" to realIp))
-//		val resultString = musicApi.post(result.url, result.headers, result.data)
-//		val response = loginStatusAdapter.fromJson(resultString)
-//		return BaseVO.success(response?.profile?.userId ?: 0L)
+
 
 		val cookie = authentication.cookie
 

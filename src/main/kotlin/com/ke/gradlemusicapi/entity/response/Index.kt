@@ -9,7 +9,7 @@ data class Artist(
     val id: Long,
     val name: String,
     @SerialName("img1v1Url")
-    val avatar: String?,
+    val avatar: String? = null,
 )
 
 //data class Song(

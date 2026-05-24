@@ -14,46 +14,51 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 @Configuration
 class ApiManager {
 
-	private val json = Json { ignoreUnknownKeys = true }
+    private val json = Json {
+        ignoreUnknownKeys = true
+        coerceInputValues = true
+        isLenient = true
 
-	private fun okhttpClient(): OkHttpClient {
+    }
 
-		val logger = HttpLoggingInterceptor {
-			println(it)
-		}.apply {
-			level = HttpLoggingInterceptor.Level.BODY
-		}
+    private fun okhttpClient(): OkHttpClient {
 
-		return OkHttpClient.Builder()
-			.addNetworkInterceptor(logger)
-			.addInterceptor { chain ->
-				val original = chain.request()
-				val request = original.newBuilder()
-					.url(
-						original.url.newBuilder()
-							.addQueryParameter("timestamp", System.currentTimeMillis().toString())
-							.build()
-					)
-					.build()
+        val logger = HttpLoggingInterceptor {
+            println(it)
+        }.apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
 
-				println(request.url.toString())
+        return OkHttpClient.Builder()
+            .addNetworkInterceptor(logger)
+            .addInterceptor { chain ->
+                val original = chain.request()
+                val request = original.newBuilder()
+                    .url(
+                        original.url.newBuilder()
+                            .addQueryParameter("timestamp", System.currentTimeMillis().toString())
+                            .build()
+                    )
+                    .build()
 
-				chain.proceed(request)
-			}
-			.build()
-	}
+                println(request.url.toString())
 
-	@Bean
-	fun createHttpService(): HttpService {
-		return Retrofit.Builder()
-			.baseUrl(
-				"http://localhost:3000"
-			)
-			.addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-			.client(okhttpClient())
-			.build()
-			.create(HttpService::class.java)
-	}
+                chain.proceed(request)
+            }
+            .build()
+    }
+
+    @Bean
+    fun createHttpService(): HttpService {
+        return Retrofit.Builder()
+            .baseUrl(
+                "http://localhost:3000"
+            )
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+            .client(okhttpClient())
+            .build()
+            .create(HttpService::class.java)
+    }
 
 
 }

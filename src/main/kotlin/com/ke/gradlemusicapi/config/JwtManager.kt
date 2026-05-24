@@ -44,7 +44,7 @@ class JwtManager {
 
 			val user = org.springframework.security.core.userdetails.User(payload.subject, "", authorities)
 			UsernamePasswordAuthenticationToken(user, payload["Cookie"], authorities)
-		} catch (e: Exception) {
+		} catch (_: Exception) {
 			null
 		}
 	}
