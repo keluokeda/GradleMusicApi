@@ -2,9 +2,13 @@ package com.ke.gradlemusicapi.controller
 
 import com.ke.gradlemusicapi.api.HttpService
 import com.ke.gradlemusicapi.cookie
+import com.ke.gradlemusicapi.entity.response.NotificationComment
+import com.ke.gradlemusicapi.entity.response.NotificationNoticeResponse
 import com.ke.gradlemusicapi.entity.response.PrivateMessage
+import com.ke.gradlemusicapi.entity.vo.BaseListVO
 import com.ke.gradlemusicapi.entity.vo.BaseVO
 import com.ke.gradlemusicapi.entity.vo.PrivateMessageVO
+import com.ke.gradlemusicapi.user
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -13,6 +17,7 @@ import kotlinx.serialization.json.Json
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
@@ -21,51 +26,83 @@ import java.util.*
 class MessageController(private val httpService: HttpService) {
 
 
-	@Operation(summary = "获取消息列表")
-	@SecurityRequirement(name = "Bearer Authentication")
-	@GetMapping("/message")
-	suspend fun getAllMessages(
-		authentication: Authentication
-	) =
-		httpService.getPrivateMessageList(limit = 1000, cookie = authentication.cookie).let {
-			val list = it.list.map { message ->
-				PrivateMessageVO(
-					message.id ?: 0L,
-					message.fromUser.userId,
-					message.fromUser.nickname,
-					message.fromUser.avatarUrl,
-					Date(message.time),
-					message.content(),
-					message.lastMessage
-				)
-			}
-
-			BaseVO.success(list)
-		}
+    @Operation(summary = "获取消息列表")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @GetMapping("/message")
+    suspend fun getAllMessages(
+        authentication: Authentication
+    ) =
+        httpService.getPrivateMessageList(limit = 1000, cookie = authentication.cookie).let {
+            val list = it.list.map { message ->
+                PrivateMessageVO(
+                    message.id ?: 0L,
+                    message.fromUser.userId,
+                    message.fromUser.nickname,
+                    message.fromUser.avatarUrl,
+                    Date(message.time),
+                    message.content(),
+                    message.lastMessage
+                )
+            }
 
 
-	@Operation(summary = "和某个人的私信内容")
-	@SecurityRequirement(name = "Bearer Authentication")
-	@GetMapping("/message/{userId}")
-	suspend fun conversions(
-		@PathVariable userId: Long,
-		before: Long,
-		authentication: Authentication
-	) = httpService.getConversions(userId, before, authentication.cookie)
+
+            BaseVO.success(list)
+        }
+
+    @Operation(summary = "通知-通知")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @GetMapping("/notification/notices")
+    suspend fun notices(
+        authentication: Authentication,
+        @RequestParam(required = false) cursor: Long? = null
+    ): BaseListVO<NotificationNoticeResponse> {
+        val response = httpService.notificationNotice(cursor, authentication.cookie)
+
+        return BaseListVO(
+            data = response.notices, hasMore = response.more, cursor = response.lastTime ?: 0
+        )
+    }
+
+    @Operation(summary = "通知-评论")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @GetMapping("/notification/comments")
+    suspend fun notificationComments(
+        authentication: Authentication,
+        @RequestParam(required = false) before: Long? = null
+    ): BaseListVO<NotificationComment> {
+        val userId = authentication.user.username.toLong()
+
+        val response = httpService.notificationComments(userId, before = before, cookie = authentication.cookie)
+        val cursor = response.comments.lastOrNull()?.time
+
+
+        return BaseListVO(data = response.comments, hasMore = response.more, cursor = cursor ?: 0)
+    }
+
+    @Operation(summary = "和某个人的私信内容")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @GetMapping("/message/{userId}")
+    suspend fun conversions(
+        @PathVariable userId: Long,
+        before: Long,
+        authentication: Authentication
+    ) = httpService.getConversions(userId, before, authentication.cookie)
 }
 
 
 private val messageJson = Json { ignoreUnknownKeys = true }
 
 private fun PrivateMessage.content(): String {
-	return try {
-		messageJson.decodeFromString<LastMessage>(lastMessage).msg
-	} catch (_: Exception) {
-		""
-	}
+    return try {
+        messageJson.decodeFromString<LastMessage>(lastMessage).msg
+    } catch (_: Exception) {
+        ""
+    }
 }
 
 @Serializable
 data class LastMessage(
-	val msg: String
+    val msg: String
 )
+

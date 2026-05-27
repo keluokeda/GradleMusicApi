@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class User(
     val userId: Long,
     val signature: String? = "",
-    val nickname: String,
-    val followed: Boolean,
+    val nickname: String ,
+    val followed: Boolean = false,
     val avatarUrl: String
 )

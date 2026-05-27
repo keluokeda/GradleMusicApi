@@ -24,7 +24,7 @@ class CommentController(private val httpService: HttpService) {
 	@SecurityRequirement(name = "Bearer Authentication")
 	@GetMapping("/comment")
 	suspend fun getComments(
-		@Parameter(description = "资源类型", required = true, example = "0")
+		@Parameter(description = "资源类型 0表示歌曲，1表示mv，2表示歌单，3表示专辑，4表示电台，5表示视频，6表示动态 7表示电台", required = true, example = "0")
 		type: Int,
 		@Parameter(description = "资源id", required = true, example = "25920721")
 		id: Long,
@@ -32,8 +32,6 @@ class CommentController(private val httpService: HttpService) {
 		pageSize: Int,
 		@Parameter(description = "页码", required = true, example = "1")
 		index: Int,
-		@Parameter(description = "游标", required = true, example = "0")
-		cursor: Long,
 		authentication: Authentication
 	): BaseListVO<CommentVO> {
 
