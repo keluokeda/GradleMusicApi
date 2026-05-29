@@ -422,15 +422,6 @@ interface HttpService {
 
 
     /**
-     * 每日推荐
-     */
-    @GET("recommend/songs")
-    suspend fun recommendSongs(
-        @Query("cookie") cookie: String? = null,
-
-        ): RecommendSongsResponse
-
-    /**
      * 用户详情
      */
     @GET("user/detail")
@@ -438,6 +429,51 @@ interface HttpService {
         @Query("uid") userId: Long, @Query("cookie") cookie: String? = null,
     ): UserDetailResponse
 
+    /**
+     * 用户详情
+     */
+    @GET("user/detail")
+    suspend fun userDetail(
+        @Query("uid") userId: String, @Query("cookie") cookie: String,
+    ): UserDetailResponse
+
+    @GET("user/account")
+    suspend fun userAccount(
+        @Query("cookie") cookie: String? = null,
+    ): UserAccountResponse
+
+    @GET("user/level")
+    suspend fun userLevel(
+        @Query("cookie") cookie: String? = null,
+    ): UserLevelResponse
+
+//    @GET("user/subcount")
+//    suspend fun subcount(
+//        @Query("cookie") cookie: String? = null,
+//    )
+
+    @GET("user/binding")
+    suspend fun userBinding(
+        @Query("cookie") cookie: String? = null,
+    )
+
+    /**
+     * 用户状态
+     * {"code":200,"data":{},"message":""} 可能是空
+     */
+    @GET("user/social/status")
+    suspend fun userStatus(
+        @Query("uid") userId: String,
+        @Query("cookie") cookie: String? = null,
+    ): UserCurrentStatusResponse
+
+    /**
+     * 用户可选状态
+     */
+    @GET("user/social/status/support")
+    suspend fun userSupportStatus(
+        @Query("cookie") cookie: String? = null,
+    ): UserSupportStatusResponse
 
     /**
      * 获取用户动态
@@ -579,4 +615,45 @@ interface HttpService {
         @Query("id") mvId: Long,
         @Query("cookie") cookie: String? = null,
     ): MvUrlResponse
+
+    /**
+     * 每日推荐歌单
+     */
+    @GET("recommend/resource")
+    suspend fun recommendPlaylists(
+        @Query("cookie") cookie: String? = null,
+    ): RecommendPlaylistsResponse
+
+    /**
+     * 每日推荐歌曲
+     */
+    @GET("recommend/songs")
+    suspend fun recommendSongs(
+        @Query("cookie") cookie: String? = null,
+    ): RecommendSongsResponse
+
+    /**
+     * 每日推荐新歌
+     */
+    @GET("personalized/newsong")
+    suspend fun recommendNewSongs(
+        @Query("cookie") cookie: String?,
+        @Query("limit") limit: Int = 30,
+    ): RecommendNewSongsResponse
+
+    /**
+     * 每日推荐视频
+     */
+    @GET("video/timeline/recommend")
+    suspend fun recommendVideos(
+        @Query("cookie") cookie: String? = null,
+    ): RecommendVideosResponse
+
+    /**
+     * 排行榜
+     */
+    @GET("toplist")
+    suspend fun toplist(
+        @Query("cookie") cookie: String? = null
+    ): ToplistResponse
 }

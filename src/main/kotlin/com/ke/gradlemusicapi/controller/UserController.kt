@@ -73,7 +73,7 @@ class UserController(
 			follows = userDetailResponse.profile.follows,
 			createTime = userDetailResponse.createTime,
 			createDays = userDetailResponse.createDays,
-			playlistBeSubscribedCount = userDetailResponse.profile.playlistBeSubscribedCount,
+			playlistBeSubscribedCount = 0,
 			inBlacklist = userDetailResponse.profile.inBlacklist,
 			blacklist = userDetailResponse.profile.blacklist,
 			userPlaylists = playlists.filter {
