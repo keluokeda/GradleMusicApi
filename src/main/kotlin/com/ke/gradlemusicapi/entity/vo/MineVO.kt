@@ -10,6 +10,6 @@ data class MineVO(
     val userDetail: UserDetailResponse,
     val userLevel: UserLevelResponse,
     val userAccount: UserAccountResponse,
-    val supportStatusList: List<UserSupportStatus>,
-    val currentStatus: UserCurrentStatusResponse
+//    val supportStatusList: List<UserSupportStatus>,
+    val currentStatus: UserSupportStatus?
 )

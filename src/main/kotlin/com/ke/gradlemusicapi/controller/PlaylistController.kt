@@ -17,6 +17,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
+import retrofit2.http.Query
 
 @Tag(name = "歌单")
 @RestController
@@ -199,5 +200,36 @@ class PlaylistController(
 
 //        playlistService.savePlaylistSubscribers(id, response.subscribers, index, size, index == 1)
         return BaseListVO(data = response.subscribers, hasMore = response.more)
+    }
+
+    @Operation(summary = "精品歌单标签")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @GetMapping("/playlist/top/tags")
+    suspend fun topPlaylistTags(authentication: Authentication,): BaseVO<List<String>> {
+        val tags = httpService.topPlaylistTags(authentication.cookie).tags.map { it.name }
+
+        return BaseVO.success(tags)
+    }
+    @Operation(summary = "精品歌列表")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @GetMapping("/playlist/top")
+    suspend fun topPlaylists(
+        category: String? = null,
+        limit: Int? = null,
+        before: Long? = null,
+        authentication: Authentication,
+    ): BaseListVO<Playlist>{
+       val response =  httpService.topPlaylists(
+            cookie = authentication.cookie,
+            category = category,
+            limit = limit,
+            before = before
+        )
+
+        return BaseListVO(
+            data = response.playlists,
+            hasMore = response.more,
+            cursor = response.lasttime
+        )
     }
 }

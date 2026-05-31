@@ -23,5 +23,6 @@ data class UserSupportStatusResponse(
 data class UserSupportStatus(
     val type: String,
     val iconUrl: String,
-    val content: String
+    val content: String,
+    val actionUrl: String? = null
 )

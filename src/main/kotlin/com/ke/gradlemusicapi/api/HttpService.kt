@@ -508,7 +508,7 @@ interface HttpService {
         @Query("area") area: Int,
         @Query("limit") limit: Int,
         @Query("offset") offset: Int,
-        @Query("cookie") cookie: String? = null,
+        @Query("cookie") cookie: String,
 
         ): ArtistListResponse
 
@@ -656,4 +656,61 @@ interface HttpService {
     suspend fun toplist(
         @Query("cookie") cookie: String? = null
     ): ToplistResponse
+
+    /**
+     * 获取历史日推可用日期列表
+     */
+    @GET("history/recommend/songs")
+    suspend fun recommendSongsDate(@Query("cookie") cookie: String): RecommendSongsDateResponse
+
+    /**
+     * 获取历史日推详情数据
+     * @param date 日期,通过历史日推可用日期列表接口获取,不能任意日期
+     */
+    @GET("history/recommend/songs/detail")
+    suspend fun recommendSongsByDate(
+        @Query("date") date: String,
+        @Query("cookie") cookie: String
+    ): RecommendSongsDateResponse
+
+    /**
+     * 编辑用户状态
+     */
+    @GET("user/social/status/edit")
+    suspend fun updateUserStatus(
+        @Query("content") content: String,
+        @Query("type") type: String,
+        @Query("iconUrl") iconUrl: String,
+        @Query("actionUrl") actionUrl: String? = null,
+        @Query("cookie") cookie: String
+    )
+
+    /**
+     * 相同状态的用户
+     */
+    @GET("user/social/status/rcmd")
+    suspend fun sameStatusUsers(@Query("cookie") cookie: String): SameStatusUsersResponse
+
+    /**
+     * 热门歌手
+     */
+    @GET("top/artists")
+    suspend fun topArtists(@Query("cookie") cookie: String): TopArtistsResponse
+
+    /**
+     * 精品歌单
+     */
+    @GET("top/playlist/highquality")
+    suspend fun topPlaylists(
+        @Query("cookie") cookie: String,
+        @Query("cat") category: String? = null,
+        @Query("limit") limit: Int? = 50,
+        @Query("before") before: Long? = 0,
+        ):PlaylistsResponse
+
+    /**
+     * 精品歌单标签
+     */
+    @GET("playlist/highquality/tags")
+    suspend fun topPlaylistTags(@Query("cookie") cookie: String,):TopPlaylistTagsResponse
 }
