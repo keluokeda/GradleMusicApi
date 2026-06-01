@@ -512,13 +512,6 @@ interface HttpService {
 
         ): ArtistListResponse
 
-    /**
-     * 歌手描述
-     */
-    @GET("artist/desc")
-    suspend fun getArtistDesc(
-        @Query("id") id: Long, @Query("cookie") cookie: String? = null,
-    ): ArtistDescResponse
 
     /**
      * 获取歌手信息和热门歌曲
@@ -706,11 +699,74 @@ interface HttpService {
         @Query("cat") category: String? = null,
         @Query("limit") limit: Int? = 50,
         @Query("before") before: Long? = 0,
-        ):PlaylistsResponse
+    ): PlaylistsResponse
 
     /**
      * 精品歌单标签
      */
     @GET("playlist/highquality/tags")
-    suspend fun topPlaylistTags(@Query("cookie") cookie: String,):TopPlaylistTagsResponse
+    suspend fun topPlaylistTags(@Query("cookie") cookie: String): TopPlaylistTagsResponse
+
+//    /**
+//     * 歌手详情动态
+//     */
+//    @GET("artist/detail/dynamic")
+//    suspend fun artistDynamic(
+//        @Query("id") id: Long,
+//        @Query("cookie") cookie: String
+//    )
+
+    /**
+     * 歌手详情
+     */
+    @GET("artist/detail")
+    suspend fun artistDetail(
+        @Query("id") id: Long,
+        @Query("cookie") cookie: String
+    ): CodeDataResponse<ArtistDetailResponse>
+
+//    /**
+//     * 歌手百科
+//     */
+//    @GET("ugc/artist/get")
+//    suspend fun artistUgc(
+//        @Query("id") id: Long,
+//        @Query("cookie") cookie: String
+//    )
+
+    /**
+     * 歌手粉丝数量
+     */
+    @GET("artist/follow/count")
+    suspend fun artistFansCount(
+        @Query("id") id: Long,
+        @Query("cookie") cookie: String
+    ): CodeDataResponse<ArtistFansCountResponse>
+
+    /**
+     * 歌手粉丝
+     */
+    @GET("artist/fans")
+    suspend fun artistFans(
+        @Query("id") id: Long,
+        @Query("offset") offset: Int = 0,
+        @Query("limit") limit: Int = 20,
+        @Query("cookie") cookie: String,
+    ): CodeDataResponse<List<ArtistFansResponse>>
+
+    /**
+     * 歌手描述
+     */
+    @GET("artist/desc")
+    suspend fun getArtistDesc(
+        @Query("id") id: Long, @Query("cookie") cookie: String
+    ): ArtistDescResponse
+
+    /**
+     * 歌手热门50首歌曲
+     */
+    @GET("artist/top/song")
+    suspend fun artistHotSongs(
+        @Query("id") id: Long, @Query("cookie") cookie: String
+    ): ArtistHotSongsResponse
 }

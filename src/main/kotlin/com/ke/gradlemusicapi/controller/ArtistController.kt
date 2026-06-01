@@ -4,6 +4,8 @@ package com.ke.gradlemusicapi.controller
 import com.ke.gradlemusicapi.api.HttpService
 import com.ke.gradlemusicapi.cookie
 import com.ke.gradlemusicapi.entity.response.Artist
+import com.ke.gradlemusicapi.entity.response.ArtistFansResponse
+import com.ke.gradlemusicapi.entity.response.User
 import com.ke.gradlemusicapi.entity.vo.ArtistDetailVO
 import com.ke.gradlemusicapi.entity.vo.BaseListVO
 import com.ke.gradlemusicapi.entity.vo.BaseVO
@@ -24,6 +26,21 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class ArtistController(private val httpService: HttpService) {
 
+    @Operation(summary = "歌手粉丝")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @GetMapping("/artist/{id}/fans")
+    suspend fun artistFans(
+        @PathVariable id: Long,
+        index: Int,
+        size: Int,
+        authentication: Authentication
+    ): BaseVO<List<ArtistFansResponse>> {
+        val response =
+            httpService.artistFans(id, offset = (index - 1) * size, limit = size, cookie = authentication.cookie)
+
+        return BaseVO.success(response.data!!)
+    }
+
 
     @Operation(summary = "获取歌手列表")
     @SecurityRequirement(name = "Bearer Authentication")
@@ -35,7 +52,7 @@ class ArtistController(private val httpService: HttpService) {
         size: Int = 20,
         authentication: Authentication
     ): BaseListVO<Artist> {
-        val response = httpService.getArtistList(type, area, size, (index-1)*size, authentication.cookie)
+        val response = httpService.getArtistList(type, area, size, (index - 1) * size, authentication.cookie)
         return BaseListVO(data = response.artists, hasMore = response.more)
     }
 
@@ -47,15 +64,16 @@ class ArtistController(private val httpService: HttpService) {
         @PathVariable id: Long, authentication: Authentication
     ) = withContext(Dispatchers.IO) {
         val cookie = authentication.cookie
-        val artist = async {
-            val response = httpService.getArtists(id, cookie)
-            response.artist to response.hotSongs
-        }.await()
 
+//        httpService.artistFans(id,cookie=cookie)
 
-        val artistDesc = async {
-            httpService.getArtistDesc(id, cookie)
-        }
+        val detail = httpService.artistDetail(id, cookie).data!!
+        val fansCount = httpService.artistFansCount(id, cookie).data!!
+
+        val hotSongs = httpService.artistHotSongs(id, cookie).songs
+
+        val artist =
+            httpService.getArtists(id, cookie).artist
         val simiArtists = async {
             httpService.getSimiArtist(id, authentication.cookie)
         }
@@ -68,14 +86,16 @@ class ArtistController(private val httpService: HttpService) {
 
         return@withContext BaseVO.success(
             ArtistDetailVO(
-                artist.first,
-                artist.second,
-                artistDesc.await(),
+                artist,
+                hotSongs,
+                detail,
                 simiArtists.await().artists,
                 mvs.await().mvs.map {
                     MvVO(it.id, it.name, it.image)
                 },
-                albums.await().hotAlbums
+                albums.await().hotAlbums,
+                fansCount = fansCount.fansCnt,
+                followed = fansCount.isFollow
             )
         )
     }
