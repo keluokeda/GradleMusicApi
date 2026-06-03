@@ -769,4 +769,49 @@ interface HttpService {
     suspend fun artistHotSongs(
         @Query("id") id: Long, @Query("cookie") cookie: String
     ): ArtistHotSongsResponse
+
+    /**
+     * 用户动态
+     */
+    @GET("user/event")
+    suspend fun userEvent(
+        @Query("uid") uid: String,
+        @Query("limit") limit: Int = 30,
+        @Query("lasttime") lastTime: Long = -1,
+        @Query("cookie") cookie: String,
+    )
+
+    /**
+     * 热门话题
+     */
+    @GET("hot/topic")
+    suspend fun hotTopics(
+        @Query("offset") offset: Int = 0,
+        @Query("limit") limit: Int = 20,
+        @Query("cookie") cookie: String,
+    ): HotTopicsResponse
+
+    @GET("event")
+    suspend fun events(
+        @Query("pagesize") pageSize: Int = 20,
+        @Query("lasttime") lastTime: Long = -1,
+        @Query("cookie") cookie: String,
+    ): EventsResponse
+
+//    /**
+//     * 话题详情
+//     */
+//    @GET("topic/detail")
+//    suspend fun topicDetail(
+//        @Query("actid") actid: Long = 115842105,
+//        @Query("cookie") cookie: String)
+//
+//    /**
+//     * 获取话题详情热门动态
+//     */
+//    @GET("topic/detail/event/hot")
+//    suspend fun s(
+//        @Query("actid") actid: Long = 115842105,
+//        @Query("cookie") cookie: String
+//    )
 }

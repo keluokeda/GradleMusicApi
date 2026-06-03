@@ -6,21 +6,23 @@ import com.ke.gradlemusicapi.entity.vo.BaseVO
 import com.ke.gradlemusicapi.entity.vo.MineVO
 import com.ke.gradlemusicapi.entity.vo.RecommendVO
 import com.ke.gradlemusicapi.user
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class PageController(private val httpService: HttpService) {
-
+    @Operation(summary = "首页-我的")
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/mine")
     suspend fun mine(
         authentication: Authentication
 
     ): BaseVO<MineVO> {
         val cookie = authentication.cookie
-        httpService.sameStatusUsers(cookie)
-//        httpService.updateUserStatus("emo","EMOJI_TEXT_15","https://p6.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/12020914951/8137/620d/b2fc/b7f0189889945b8f77275e57891197da.png",null,cookie)
+
 
         return BaseVO.success(
             MineVO(
@@ -34,7 +36,8 @@ class PageController(private val httpService: HttpService) {
         )
 
     }
-
+    @Operation(summary = "首页-推荐")
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/recommend")
     suspend fun recommend(
         authentication: Authentication
