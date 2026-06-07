@@ -399,6 +399,26 @@ interface HttpService {
 
 
     /**
+     * 是否喜欢歌曲
+     */
+    @GET("song/like/check")
+    suspend fun isSongLiked(
+        @Query("ids") ids: String,
+        @Query("cookie") cookie: String,
+    ): CheckSongLikeResponse
+
+    /**
+     * 喜欢歌曲
+     */
+    @GET("like")
+    suspend fun likeSong(
+        @Query("id") id: Long,
+        @Query("like") like: Boolean,
+        @Query("cookie") cookie: String,
+    )
+
+
+    /**
      * 获取歌曲详情
      */
     @GET("song/detail")

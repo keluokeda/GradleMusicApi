@@ -4,5 +4,6 @@ import com.ke.gradlemusicapi.entity.response.Song
 
 data class SongDetailVO(
 	val song: Song,
-	val url: String?
+	val url: String?,
+	val liked: Boolean
 )
