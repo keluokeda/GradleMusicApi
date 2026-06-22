@@ -1,0 +1,26 @@
+
+services:
+  hs:
+    container_name: music
+    build: .
+    ports:
+      - '8080:8080'
+    network_mode: host
+#    networks:
+#      - host
+#  mongo:
+#    image: mongo
+#    ports:
+#      - '27018:27018'
+#    networks:
+#      - net
+
+#networks:
+#  host:
+#    name: host
+#    external: true
+#    name: bridge
+
+
+
+

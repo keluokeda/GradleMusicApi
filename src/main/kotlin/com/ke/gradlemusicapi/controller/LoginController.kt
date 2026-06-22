@@ -29,15 +29,14 @@ class LoginController(
 ) {
 
 
-
 	@Operation(summary = "创建登录key及网易云音乐app需要扫描的二维码")
 	@GetMapping("/key")
 	suspend fun createLoginKey(): BaseVO<CreateLoginKeyVO> {
 
 		val key = httpService.createQRKey().data!!.unikey!!
-		val url = httpService.createQRUrl(key).data!!.qrurl!!
+		val data = httpService.createQRUrl(key, qr = "1").data!!
 
-		return BaseVO.success(CreateLoginKeyVO(key, url))
+		return BaseVO.success(CreateLoginKeyVO(key, data.qrurl!!, data.qrimg))
 
 //		return BaseVO.error("未实现")
 	}

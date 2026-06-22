@@ -4,10 +4,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class LoginQRCreateResponse(
-    val data: LoginQRCreateData? = null
+	val data: LoginQRCreateData? = null
 )
 
 @Serializable
 data class LoginQRCreateData(
-    val qrurl: String? = null
+	val qrurl: String? = null,
+	val qrimg: String
 )
