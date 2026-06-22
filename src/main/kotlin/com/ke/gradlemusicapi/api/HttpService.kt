@@ -818,6 +818,15 @@ interface HttpService {
         @Query("cookie") cookie: String,
     ): EventsResponse
 
+    /**
+     * 最近播放的歌曲
+     */
+    @GET("record/recent/song")
+    suspend fun recentSongs(
+        @Query("cookie") cookie: String,
+        @Query("limit") limit: Int = 100,
+    ):RecentSongsResponse
+
 //    /**
 //     * 话题详情
 //     */

@@ -2,6 +2,7 @@ package com.ke.gradlemusicapi.controller
 
 import com.ke.gradlemusicapi.api.HttpService
 import com.ke.gradlemusicapi.cookie
+import com.ke.gradlemusicapi.entity.response.Song
 import com.ke.gradlemusicapi.entity.vo.BaseVO
 import com.ke.gradlemusicapi.entity.vo.SongDetailVO
 import io.swagger.v3.oas.annotations.Operation
@@ -34,8 +35,8 @@ class SongController(private val httpService: HttpService) {
 
         val url = httpService.getSongUrl(id, cookie = cookie).data.first().url
         val song = httpService.getSongDetail(id, cookie).songs.first()
-        val liked = httpService.isSongLiked("[$id]", cookie).ids.contains(id)
-        return BaseVO.success(SongDetailVO(song, url, liked))
+//        val liked = httpService.isSongLiked("[$id]", cookie).ids.contains(id)
+        return BaseVO.success(SongDetailVO(song, url))
 
     }
 
@@ -62,9 +63,30 @@ class SongController(private val httpService: HttpService) {
         like: Boolean,
         authentication: Authentication
     ): BaseVO<String> {
-//        val lrc = httpService.getSongLrc(id, authentication.cookie).lrc.lyric
         httpService.likeSong(id, like, authentication.cookie)
         return BaseVO.success(null)
     }
 
+    @Operation(summary = "是否喜欢音乐")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @GetMapping("/song/{id}/like")
+    suspend fun isLikeSong(
+        @Parameter(description = "歌曲id", required = true, example = "25920721")
+        @PathVariable id: Long,
+        authentication: Authentication
+    ): BaseVO<Boolean> {
+        val liked = httpService.isSongLiked("[$id]", authentication.cookie).ids.contains(id)
+        return BaseVO.success(liked)
+    }
+
+
+    @Operation(summary = "最近播放的歌曲")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @GetMapping("/song/recent")
+    suspend fun recentSongs(
+        authentication: Authentication
+    ): BaseVO<List<Song>> {
+        val list = httpService.recentSongs(authentication.cookie).data.list.map { it.data }
+        return BaseVO.success(list)
+    }
 }

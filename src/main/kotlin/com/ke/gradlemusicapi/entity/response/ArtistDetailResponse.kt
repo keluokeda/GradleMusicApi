@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ArtistDetailResponse(
     val videoCount: Int,
-    val identify: ArtistIdentify,
+    val identify: ArtistIdentify? = null,
     val artist: ArtistDetail,
     val blacklist: Boolean,
     val preferShow: Int,

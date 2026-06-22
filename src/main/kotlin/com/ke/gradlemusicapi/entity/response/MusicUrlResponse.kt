@@ -15,5 +15,6 @@ data class MusicDownloadUrlResponse(
 
 @Serializable
 data class SongUrl(
-    val url: String?
+    val url: String?,
+    val level: String
 )
