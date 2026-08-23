@@ -24,3 +24,18 @@ val Authentication.cookie: String
 val ServerHttpRequest.ipAddress: String
 	get() = this.remoteAddress?.address?.hostAddress ?: "unknown"
 
+fun String?.levelName(): String? {
+	return when (this) {
+		"standard" -> "标准"
+		"higher" -> "较高"
+		"exhigh" -> "极高"
+		"lossless" -> "无损"
+		"hires" -> "Hi-Res"
+		"jyeffect" -> "高清环绕声"
+		"sky" -> "沉浸环绕声"
+		"dolby" -> "杜比全景声"
+		"jymaster" -> "超清母带"
+		else -> null
+	}
+}
+

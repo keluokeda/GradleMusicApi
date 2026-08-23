@@ -113,3 +113,9 @@ src/main/kotlin/com/ke/gradlemusicapi/
 │   └── vo/         # 对外暴露的业务视图对象
 └── util/           # 工具类
 ```
+
+
+后端命令
+```
+npx @neteasecloudmusicapienhanced/api@latest
+```

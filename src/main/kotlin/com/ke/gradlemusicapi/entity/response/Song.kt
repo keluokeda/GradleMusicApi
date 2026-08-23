@@ -15,4 +15,22 @@ data class Song(
 	 * mv的id，如果是0表示没有
 	 */
 	val mv: Long,
+
+	/**
+	 * 歌曲时长
+	 */
+	@SerialName("dt")
+	val duration: Long,
+
+	/**
+	 * 是否免费 0表示免费 1表示收费
+	 */
+	val fee: Int,
+
+	/**
+	 * 是否有版权
+	 */
+	val copyright: Int,
+
+	val level: String? = null
 )
