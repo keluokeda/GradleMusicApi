@@ -30,7 +30,7 @@ data class Song(
 	/**
 	 * 是否有版权
 	 */
-	val copyright: Int,
+	val copyright: Int = 1,
 
 	val level: String? = null
 )
